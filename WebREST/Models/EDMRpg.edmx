@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BDRpgModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="BDRpgModelStoreContainer">
+    <EntitySet Name="PersonagensS" EntityType="BDRpgModel.Store.PersonagensS" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HabilidadesS" EntityType="BDRpgModel.Store.HabilidadesS" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="PersonagensHabilidades" Association="BDRpgModel.Store.PersonagensHabilidades">
+      <End Role="Personagens" EntitySet="PersonagensS" />
+      <End Role="Habilidades" EntitySet="HabilidadesS" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="PersonagensS">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nome" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Tipo" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HabilidadesS">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nome" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Tipo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Detalhe" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PersonagensId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="PersonagensHabilidades">
+    <End Role="Personagens" Type="BDRpgModel.Store.PersonagensS" Multiplicity="1" />
+    <End Role="Habilidades" Type="BDRpgModel.Store.HabilidadesS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Personagens">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Habilidades">
+        <PropertyRef Name="PersonagensId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BDRpgModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BDRpgEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="PersonagensS" EntityType="BDRpgModel.Personagens" />
+          <EntitySet Name="HabilidadesS" EntityType="BDRpgModel.Habilidades" />
+          <AssociationSet Name="PersonagensHabilidades" Association="BDRpgModel.PersonagensHabilidades">
+            <End Role="Personagens" EntitySet="PersonagensS" />
+            <End Role="Habilidades" EntitySet="HabilidadesS" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Personagens">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" Nullable="false" />
+          <Property Name="Tipo" Type="String" Nullable="false" />
+          <NavigationProperty Name="HabilidadesS" Relationship="BDRpgModel.PersonagensHabilidades" FromRole="Personagens" ToRole="Habilidades" />
+          <Property Name="Genero" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Habilidades">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" Nullable="false" />
+          <Property Name="Tipo" Type="String" Nullable="false" />
+          <Property Name="Detalhes" Type="String" Nullable="false" />
+          <Property Name="PersonagensId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Personagens" Relationship="BDRpgModel.PersonagensHabilidades" FromRole="Habilidades" ToRole="Personagens" />
+        </EntityType>
+        <Association Name="PersonagensHabilidades">
+          <End Type="BDRpgModel.Personagens" Role="Personagens" Multiplicity="1" />
+          <End Type="BDRpgModel.Habilidades" Role="Habilidades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personagens">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Habilidades">
+              <PropertyRef Name="PersonagensId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BDRpgModelStoreContainer" CdmEntityContainer="BDRpgEntities">
+    <EntitySetMapping Name="PersonagensS">
+      <EntityTypeMapping TypeName="IsTypeOf(BDRpgModel.Personagens)">
+        <MappingFragment StoreEntitySet="PersonagensS">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nome" ColumnName="Nome" />
+          <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HabilidadesS">
+      <EntityTypeMapping TypeName="IsTypeOf(BDRpgModel.Habilidades)">
+        <MappingFragment StoreEntitySet="HabilidadesS">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nome" ColumnName="Nome" />
+          <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+          <ScalarProperty Name="Detalhes" ColumnName="Detalhe" />
+          <ScalarProperty Name="PersonagensId" ColumnName="PersonagensId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
